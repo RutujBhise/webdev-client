@@ -1,6 +1,5 @@
 import AssignmentItem from "./AssignmentItem";
 
-// §1.4.7 ON YOUR OWN — book stub. You fill this in.
 export default async function Assignments({
   params,
 }: {
@@ -9,10 +8,35 @@ export default async function Assignments({
   const { cid } = await params;
   return (
     <div id="wd-assignments">
-      {/* search input, + Group, + Assignment */}
-      {/* h3 wd-assignments-title */}
+      <input id="wd-search-assignment" placeholder="Search for Assignments" />
+      {" "}
+      <button type="button" id="wd-add-assignment-group">+ Group</button>
+      {" "}
+      <button type="button" id="wd-add-assignment">+ Assignment</button>
+      
+      <h3 id="wd-assignments-title">
+        ASSIGNMENTS 40% of Total <button type="button">+</button>
+      </h3>
+      
       <ul id="wd-assignment-list">
-        {/* at least three AssignmentItems using cid */}
+        <AssignmentItem 
+          cid={cid} 
+          aid="123" 
+          title="A1 - ENV + HTML" 
+          details="Multiple Modules | Not available until May 6 at 12:00am | Due May 13 at 11:59pm | 100 pts" 
+        />
+        <AssignmentItem 
+          cid={cid} 
+          aid="124" 
+          title="A2 - CSS + TAILWIND" 
+          details="Multiple Modules | Not available until May 13 at 12:00am | Due May 20 at 11:59pm | 100 pts" 
+        />
+        <AssignmentItem 
+          cid={cid} 
+          aid="125" 
+          title="A3 - JAVASCRIPT + REACT" 
+          details="Multiple Modules | Not available until May 20 at 12:00am | Due May 27 at 11:59pm | 100 pts" 
+        />
       </ul>
     </div>
   );

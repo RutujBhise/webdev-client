@@ -1,12 +1,19 @@
-// §1.4.8 ON YOUR OWN — book stub. You complete the rest.
-// NOTE: the book stub puts text *between* <textarea> tags. React 19 throws on
-// that (see book §1.3.6.2), so the description uses defaultValue instead.
-export default function AssignmentEditor() {
+import Link from "next/link";
+
+export default async function AssignmentEditor({
+  params,
+}: {
+  params: Promise<{ cid: string }>;
+}) {
+  const { cid } = await params;
   return (
     <div id="wd-assignments-editor">
       <label htmlFor="wd-name">Assignment Name</label>
       <input id="wd-name" defaultValue="A1 - ENV + HTML" />
       <br />
+      <br />
+      
+      <label htmlFor="wd-description">Description</label>
       <br />
       <textarea
         id="wd-description"
@@ -23,9 +30,98 @@ export default function AssignmentEditor() {
               <input id="wd-points" defaultValue={100} />
             </td>
           </tr>
-          {/* Complete on your own — see checklist in §1.4.8 */}
+          
+          <tr>
+            <td align="right" valign="top">
+              <label htmlFor="wd-group">Assignment Group</label>
+            </td>
+            <td>
+              <select id="wd-group" defaultValue="ASSIGNMENTS">
+                <option value="ASSIGNMENTS">ASSIGNMENTS</option>
+                <option value="QUIZZES">QUIZZES</option>
+                <option value="EXAMS">EXAMS</option>
+                <option value="PROJECT">PROJECT</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="right" valign="top">
+              <label htmlFor="wd-display-grade-as">Display Grade as</label>
+            </td>
+            <td>
+              <select id="wd-display-grade-as" defaultValue="PERCENTAGE">
+                <option value="PERCENTAGE">Percentage</option>
+                <option value="POINTS">Points</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="right" valign="top">
+              <label htmlFor="wd-submission-type">Submission Type</label>
+            </td>
+            <td>
+              <select id="wd-submission-type" defaultValue="ONLINE">
+                <option value="ONLINE">Online</option>
+                <option value="ON_PAPER">On Paper</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="right" valign="top">
+              Online Entry Options
+            </td>
+            <td>
+              <input type="checkbox" id="wd-text-entry" />
+              <label htmlFor="wd-text-entry">Text Entry</label><br />
+
+              <input type="checkbox" id="wd-website-url" />
+              <label htmlFor="wd-website-url">Website URL</label><br />
+
+              <input type="checkbox" id="wd-media-recordings" />
+              <label htmlFor="wd-media-recordings">Media Recordings</label><br />
+
+              <input type="checkbox" id="wd-student-annotation" />
+              <label htmlFor="wd-student-annotation">Student Annotation</label><br />
+
+              <input type="checkbox" id="wd-file-upload" />
+              <label htmlFor="wd-file-upload">File Uploads</label><br />
+            </td>
+          </tr>
+
+          <tr>
+            <td align="right" valign="top">
+              Assign
+            </td>
+            <td>
+              <label htmlFor="wd-assign-to">Assign to</label><br />
+              <input id="wd-assign-to" defaultValue="Everyone" />
+              <br /><br />
+
+              <label htmlFor="wd-due-date">Due</label><br />
+              <input type="date" id="wd-due-date" defaultValue="2024-05-13" />
+              <br /><br />
+
+              <label htmlFor="wd-available-from">Available from</label><br />
+              <input type="date" id="wd-available-from" defaultValue="2024-05-06" />
+              <br /><br />
+
+              <label htmlFor="wd-available-until">Until</label><br />
+              <input type="date" id="wd-available-until" defaultValue="2024-05-20" />
+            </td>
+          </tr>
         </tbody>
       </table>
+      <hr />
+      <Link id="wd-cancel" href={`/courses/${cid}/assignments`}>
+        Cancel
+      </Link>
+      {" "}
+      <Link id="wd-save" href={`/courses/${cid}/assignments`}>
+        Save
+      </Link>
     </div>
   );
 }
