@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function TOC() {
   return (
     <ul>
-      <li>Rutuj Bhise — building Kambaz one tag at a time</li>
+      <li>Rutuj Bhise: from AI workflows to full-stack apps</li>
       <li>
         <Link href="/labs" id="wd-home-link">
           Home
