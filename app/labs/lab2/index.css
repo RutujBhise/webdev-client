@@ -321,8 +321,8 @@ p#wd-ai-id-selector {
 
 .wd-pos-relative-nudge-rutuj {
   position: relative;
-  top: 40px;
-  left: -20px;
+  top: 0px;
+  left: 100px;
 }
 
 /* With AI §2.1.13 */
