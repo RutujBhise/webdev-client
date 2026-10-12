@@ -63,6 +63,13 @@ export default async function Assignments({
           title="A3 - JAVASCRIPT + REACT"
           details="Multiple Modules | Not available until May 20 at 12:00am | Due May 27 at 11:59pm | 100 pts"
         />
+
+         <AssignmentItem
+          cid={cid}
+          aid="126"
+          title="A4 - CLIENT STATE"
+          details="Multiple Modules | Not available until May 27 at 12:00am | Due June 3 at 11:59pm | 100 pts"
+        />
        
         <AssignmentItem
           cid={cid}
@@ -71,12 +78,7 @@ export default async function Assignments({
           details="Multiple Modules | Not available until June 1 at 12:00am | Due June 8 at 11:59pm | 100 pts"
         />
   
-        <AssignmentItem
-          cid={cid}
-          aid="126"
-          title="A4 - CLIENT STATE"
-          details="Multiple Modules | Not available until May 27 at 12:00am | Due June 3 at 11:59pm | 100 pts"
-        />
+       
       </ul>
     </div>
   );

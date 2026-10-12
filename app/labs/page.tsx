@@ -4,7 +4,17 @@ export default function Labs() {
   return (
     <div id="wd-labs">
       <h1>Labs</h1>
-      <h2 id="wd-student-name">Rutuj Rajesh Bhise — CS 5610-09</h2>
+      <h2 id="wd-student-name">Rutuj Rajesh Bhise - CS 5610-09</h2>
+      <p>
+        <a
+          id="wd-github"
+          href="https://github.com/RutujBhise/webdev-client"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub repository: RutujBhise/webdev-client
+        </a>
+      </p>
       <ul>
         <li>
           <Link href="/labs/lab1">Lab 1: HTML Examples</Link>
@@ -16,9 +26,11 @@ export default function Labs() {
           <Link href="/labs/lab3">Lab 3: JavaScript Fundamentals</Link>
         </li>
         <li>
-          <Link href="/labs/lab4" id="wd-lab4-link">Lab 4</Link>
+          <Link href="/labs/lab4" id="wd-lab4-link">
+            Lab 4
+          </Link>
         </li>
-        {/* With AI §1.3.10 */}
+      
         <li>
           <Link href="/labs/lab5" id="wd-lab5-link">
             Lab 5
