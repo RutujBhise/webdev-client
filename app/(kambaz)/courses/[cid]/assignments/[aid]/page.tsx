@@ -1,30 +1,55 @@
-import Link from "next/link";
-import * as db from "../../../../database";
+"use client";
 
-// The A2 Tailwind form, now filled from assignments.json for the clicked row.
+import { useState } from "react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import {
+  emptyAssignment,
+  useAssignmentsStore,
+  type Assignment,
+} from "../../../../store/assignmentsStore";
+
 const field = "w-full rounded border border-neutral-300 px-3 py-2";
 const label = "mb-1 block font-medium";
 
-export default async function AssignmentEditor({
-  params,
-}: {
-  params: Promise<{ cid: string; aid: string }>;
-}) {
-  const { cid, aid } = await params;
-  const assignment = db.assignments.find((a) => a._id === aid);
+export default function AssignmentEditor() {
+  const { cid, aid } = useParams();
+  const courseId = String(cid);
+  const assignmentId = String(aid);
+  const router = useRouter();
+  const existing = useAssignmentsStore((state) =>
+    state.assignments.find((a) => a._id === assignmentId),
+  );
+  const addAssignment = useAssignmentsStore((state) => state.addAssignment);
+  const updateAssignment = useAssignmentsStore((state) => state.updateAssignment);
+  const [draft, setDraft] = useState<Assignment>(
+    () => existing ?? emptyAssignment(courseId),
+  );
+  const listUrl = `/courses/${courseId}/assignments`;
+
+  const save = () => {
+    if (existing) {
+      updateAssignment({ ...draft, course: courseId });
+    } else {
+      addAssignment({ ...draft, course: courseId });
+    }
+    router.push(listUrl);
+  };
+
   return (
-    <div id="wd-assignments-editor" key={aid} className="max-w-3xl">
+    <div id="wd-assignments-editor" className="max-w-3xl">
       <div className="mb-4">
         <label htmlFor="wd-name" className={label}>
           Assignment Name
         </label>
         <input
           id="wd-name"
-          defaultValue={assignment?.title ?? ""}
+          value={draft.title}
+          onChange={(e) => setDraft({ ...draft, title: e.target.value })}
           className={field}
         />
         <p id="wd-assignment-id" className="mt-1 text-sm text-neutral-600">
-          Assignment id: {aid}
+          Assignment id: {existing ? assignmentId : "(new)"}
         </p>
       </div>
 
@@ -35,7 +60,8 @@ export default async function AssignmentEditor({
         <textarea
           id="wd-description"
           rows={8}
-          defaultValue={assignment?.description ?? ""}
+          value={draft.description}
+          onChange={(e) => setDraft({ ...draft, description: e.target.value })}
           className={field}
         />
       </div>
@@ -47,7 +73,11 @@ export default async function AssignmentEditor({
           </label>
           <input
             id="wd-points"
-            defaultValue={assignment?.points ?? 100}
+            type="number"
+            value={draft.points}
+            onChange={(e) =>
+              setDraft({ ...draft, points: parseInt(e.target.value) || 0 })
+            }
             className={field}
           />
         </div>
@@ -66,11 +96,7 @@ export default async function AssignmentEditor({
           <label htmlFor="wd-display-grade-as" className={label}>
             Display Grade as
           </label>
-          <select
-            id="wd-display-grade-as"
-            defaultValue="PERCENTAGE"
-            className={field}
-          >
+          <select id="wd-display-grade-as" defaultValue="PERCENTAGE" className={field}>
             <option value="PERCENTAGE">Percentage</option>
             <option value="POINTS">Points</option>
           </select>
@@ -79,11 +105,7 @@ export default async function AssignmentEditor({
           <label htmlFor="wd-submission-type" className={label}>
             Submission Type
           </label>
-          <select
-            id="wd-submission-type"
-            defaultValue="ONLINE"
-            className={field}
-          >
+          <select id="wd-submission-type" defaultValue="ONLINE" className={field}>
             <option value="ONLINE">Online</option>
             <option value="ON_PAPER">On Paper</option>
           </select>
@@ -129,7 +151,8 @@ export default async function AssignmentEditor({
           <input
             type="date"
             id="wd-due-date"
-            defaultValue={assignment?.due}
+            value={draft.due}
+            onChange={(e) => setDraft({ ...draft, due: e.target.value })}
             className={field}
           />
         </div>
@@ -141,7 +164,8 @@ export default async function AssignmentEditor({
             <input
               type="date"
               id="wd-available-from"
-              defaultValue={assignment?.available}
+              value={draft.available}
+              onChange={(e) => setDraft({ ...draft, available: e.target.value })}
               className={field}
             />
           </div>
@@ -152,7 +176,8 @@ export default async function AssignmentEditor({
             <input
               type="date"
               id="wd-available-until"
-              defaultValue={assignment?.due}
+              value={draft.until ?? draft.due}
+              onChange={(e) => setDraft({ ...draft, until: e.target.value })}
               className={field}
             />
           </div>
@@ -170,18 +195,19 @@ export default async function AssignmentEditor({
       <div className="flex justify-end gap-2">
         <Link
           id="wd-cancel"
-          href={`/courses/${cid}/assignments`}
+          href={listUrl}
           className="rounded border border-neutral-300 bg-neutral-100 px-4 py-2 text-neutral-900 no-underline"
         >
           Cancel
         </Link>
-        <Link
+        <button
+          type="button"
           id="wd-save"
-          href={`/courses/${cid}/assignments`}
-          className="rounded bg-red-600 px-4 py-2 text-white no-underline"
+          onClick={save}
+          className="rounded bg-red-600 px-4 py-2 text-white"
         >
           Save
-        </Link>
+        </button>
       </div>
     </div>
   );

@@ -1,16 +1,24 @@
+"use client";
+
+import { useParams, useRouter } from "next/navigation";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import AssignmentItem from "./AssignmentItem";
-import * as db from "../../../database";
+import { useAssignmentsStore } from "../../../store/assignmentsStore";
 
-export default async function Assignments({
-  params,
-}: {
-  params: Promise<{ cid: string }>;
-}) {
-  const { cid } = await params;
-  const assignments = db.assignments.filter(
-    (assignment) => assignment.course === cid,
-  );
+export default function Assignments() {
+  const { cid } = useParams();
+  const courseId = String(cid);
+  const router = useRouter();
+  const allAssignments = useAssignmentsStore((state) => state.assignments);
+  const deleteAssignment = useAssignmentsStore((state) => state.deleteAssignment);
+  const assignments = allAssignments.filter((a) => a.course === courseId);
+
+  const confirmDelete = (aid: string, title: string) => {
+    if (window.confirm(`Are you sure you want to remove ${title}?`)) {
+      deleteAssignment(aid);
+    }
+  };
+
   return (
     <div id="wd-assignments">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
@@ -34,6 +42,7 @@ export default async function Assignments({
             id="wd-add-assignment"
             type="button"
             className="inline-flex items-center gap-1 rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
+            onClick={() => router.push(`/courses/${courseId}/assignments/new`)}
           >
             <FaPlus /> Assignment
           </button>
@@ -55,10 +64,11 @@ export default async function Assignments({
         {assignments.map((assignment) => (
           <AssignmentItem
             key={assignment._id}
-            cid={cid}
+            cid={courseId}
             aid={assignment._id}
             title={assignment.title}
             details={`Multiple Modules | Not available until ${assignment.available} | Due ${assignment.due} | ${assignment.points} pts`}
+            onDelete={() => confirmDelete(assignment._id, assignment.title)}
           />
         ))}
       </ul>
